@@ -60,6 +60,7 @@ public class Config {
     protected String posTerminalManagementApiEndpoint;
 
     protected String dataProtectionEndpoint;
+    protected String legalEntityAPIEndpoint;
 
     public Config() {
         // do nothing
@@ -229,4 +230,11 @@ public class Config {
         this.dataProtectionEndpoint = dataProtectionEndpoint;
     }
 
+    public String getLegalEntityAPIEndpoint() {
+        return legalEntityAPIEndpoint;
+    }
+
+    public void setLegalEntityAPIEndpoint(String legalEntityAPIEndpoint) {
+        this.legalEntityAPIEndpoint = legalEntityAPIEndpoint;
+    }
 }

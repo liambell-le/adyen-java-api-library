@@ -65,6 +65,11 @@ public class Client {
     public static final String POS_TERMINAL_MANAGEMENT_VERSION = "v1";
     public static final String DATA_PROTECTION_VERSION = "v1";
 
+    // Kyc-Component
+    public static final String LE_API_ENDPOINT_VERSION = "V1";
+    public static final String LE_API_ENDPOINT_TEST = "https://balanceplatform-api-test.adyen.com/bcl/";
+    public static final String LE_API_ENDPOINT_LIVE = "https://balanceplatform-api-live.adyen.com/bcl/";
+
     public Client() {
         this.config = new Config();
     }
@@ -188,6 +193,7 @@ public class Client {
             this.config.setTerminalApiCloudEndpoint(TERMINAL_API_ENDPOINT_LIVE);
             this.config.setPosTerminalManagementApiEndpoint(POS_TERMINAL_MANAGEMENT_ENDPOINT_LIVE);
             this.config.setDataProtectionEndpoint(DATA_PROTECTION_ENDPOINT_LIVE);
+            this.config.setLegalEntityAPIEndpoint(LE_API_ENDPOINT_LIVE);
         }
     }
 
