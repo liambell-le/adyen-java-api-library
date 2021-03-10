@@ -18,7 +18,7 @@ public class Individual {
     private Address address = null;
 
     @SerializedName("phone")
-    private PhoneNumber phone = null;
+    private Phone phone = null;
 
     @SerializedName("webData")
     private WebData webData = null;
@@ -50,11 +50,11 @@ public class Individual {
         this.address = address;
     }
 
-    public PhoneNumber getPhone() {
+    public Phone getPhone() {
         return phone;
     }
 
-    public void setPhone(PhoneNumber phone) {
+    public void setPhone(Phone phone) {
         this.phone = phone;
     }
 

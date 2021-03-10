@@ -6,9 +6,9 @@ import com.adyen.service.Resource;
 
 import java.util.Collections;
 
-public class LegalEntity extends Resource {
+public class LegalEntityCreate extends Resource {
 
-    public LegalEntity(Service service) {
+    public LegalEntityCreate(Service service) {
         super(service, service.getClient().getConfig().getLegalEntityAPIEndpoint() + "/" + Client.LE_API_ENDPOINT_VERSION +
                 "/legalEntities", Collections.singletonList("legalEntity"));
     }

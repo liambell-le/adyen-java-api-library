@@ -13,9 +13,9 @@ import java.util.Objects;
 
 import static com.adyen.util.Util.toIndentedString;
 
-public class PhoneNumber {
+public class Phone {
 
-    @JsonAdapter(PhoneNumber.PhoneTypeEnum.Adapter.class)
+    @JsonAdapter(Phone.PhoneTypeEnum.Adapter.class)
     public enum PhoneTypeEnum {
         MOBILE("mobile"),
         LANDLINE("landline"),
@@ -45,16 +45,16 @@ public class PhoneNumber {
             return String.valueOf(value);
         }
 
-        public static class Adapter extends TypeAdapter<PhoneNumber.PhoneTypeEnum> {
+        public static class Adapter extends TypeAdapter<Phone.PhoneTypeEnum> {
             @Override
-            public void write(final JsonWriter jsonWriter, final PhoneNumber.PhoneTypeEnum enumeration) throws IOException {
+            public void write(final JsonWriter jsonWriter, final Phone.PhoneTypeEnum enumeration) throws IOException {
                 jsonWriter.value(enumeration.getValue());
             }
 
             @Override
-            public PhoneNumber.PhoneTypeEnum read(final JsonReader jsonReader) throws IOException {
+            public Phone.PhoneTypeEnum read(final JsonReader jsonReader) throws IOException {
                 String value = jsonReader.nextString();
-                return PhoneNumber.PhoneTypeEnum.fromValue(String.valueOf(value));
+                return Phone.PhoneTypeEnum.fromValue(String.valueOf(value));
             }
         }
     }
@@ -100,7 +100,7 @@ public class PhoneNumber {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PhoneNumber name = (PhoneNumber) o;
+        Phone name = (Phone) o;
         return Objects.equals(this.type, name.type)
                 && Objects.equals(this.countryCode, name.countryCode)
                 && Objects.equals(this.number, name.number);
