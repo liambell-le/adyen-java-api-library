@@ -11,6 +11,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 
+import static com.adyen.constants.ApiConstants.RequestProperty.Method;
+
 public class LegalEntity extends Service {
 
     private LegalEntityCreate legalEntity;
@@ -24,8 +26,8 @@ public class LegalEntity extends Service {
      * POST /legalEntities API call
      * @param legalEntityRequest LegalEntityRequest
      * @return legalEntityResponse LegalEntityResponse
-     * @throws ApiException
-     * @throws IOException
+     * @throws ApiException ApiException
+     * @throws IOException IOException
      */
     public LegalEntityResponse createLegalEntity(LegalEntityRequest legalEntityRequest) throws ApiException, IOException {
         return createLegalEntity(legalEntityRequest, null);
@@ -36,12 +38,12 @@ public class LegalEntity extends Service {
      * @param legalEntityRequest LegalEntityRequest
      * @param requestOptions RequestOptions
      * @return legalEntityResponse LegalEntityResponse
-     * @throws ApiException
-     * @throws IOException
+     * @throws ApiException ApiException
+     * @throws IOException IOException
      */
     public LegalEntityResponse createLegalEntity(LegalEntityRequest legalEntityRequest, RequestOptions requestOptions) throws ApiException, IOException {
         String jsonRequest = GSON.toJson(legalEntityRequest);
-        String jsonResult = legalEntity.request(jsonRequest, requestOptions);
+        String jsonResult = legalEntity.request(jsonRequest, requestOptions, Method.POST);
         return GSON.fromJson(jsonResult, new TypeToken<LegalEntityResponse>() {
         }.getType());
     }

@@ -20,6 +20,7 @@
  */
 package com.adyen;
 
+import static com.adyen.constants.ApiConstants.RequestProperty.Method;
 import com.adyen.enums.Gender;
 import com.adyen.enums.VatCategory;
 import com.adyen.httpclient.HTTPClientException;
@@ -80,6 +81,7 @@ import java.util.Map;
 
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.isNull;
 import static org.mockito.Mockito.mock;
@@ -101,6 +103,7 @@ public class BaseTest {
             when(httpURLConnectionClient.post(any(String.class), any(Map.class), any(Config.class))).thenReturn(response);
             when(httpURLConnectionClient.request(any(String.class), any(String.class), any(Config.class), anyBoolean(), any(RequestOptions.class))).thenReturn(response);
             when(httpURLConnectionClient.request(any(String.class), any(String.class), any(Config.class), anyBoolean(), isNull())).thenReturn(response);
+            when(httpURLConnectionClient.request(any(String.class), any(String.class), any(Config.class), anyBoolean(), isNull(), eq(Method.POST))).thenReturn(response);
 
         } catch (IOException | HTTPClientException e) {
             e.printStackTrace();
@@ -358,7 +361,7 @@ public class BaseTest {
         HttpURLConnectionClient httpURLConnectionClient = mock(HttpURLConnectionClient.class);
         HTTPClientException httpClientException = new HTTPClientException(status, "An error occured", new HashMap<>(), response);
         try {
-            when(httpURLConnectionClient.request(any(String.class), any(String.class), any(Config.class), anyBoolean(), isNull())).thenThrow(httpClientException);
+            when(httpURLConnectionClient.request(any(String.class), any(String.class), any(Config.class), anyBoolean(), isNull(), eq(Method.POST))).thenThrow(httpClientException);
         } catch (IOException | HTTPClientException e) {
             fail("Unexpected exception: " + e.getMessage());
         }

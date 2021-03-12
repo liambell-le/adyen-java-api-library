@@ -55,7 +55,7 @@ import static com.adyen.constants.ApiConstants.RequestProperty.API_KEY;
 import static com.adyen.constants.ApiConstants.RequestProperty.APPLICATION_JSON_TYPE;
 import static com.adyen.constants.ApiConstants.RequestProperty.CONTENT_TYPE;
 import static com.adyen.constants.ApiConstants.RequestProperty.IDEMPOTENCY_KEY;
-import static com.adyen.constants.ApiConstants.RequestProperty.METHOD_POST;
+import static com.adyen.constants.ApiConstants.RequestProperty.Method;
 import static com.adyen.constants.ApiConstants.RequestProperty.USER_AGENT;
 
 public class HttpURLConnectionClient implements ClientInterface {
@@ -79,7 +79,12 @@ public class HttpURLConnectionClient implements ClientInterface {
 
     @Override
     public String request(String requestUrl, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions) throws IOException, HTTPClientException {
-        HttpURLConnection httpConnection = createRequest(requestUrl, config.getApplicationName(), requestOptions);
+        return request(requestUrl, requestBody, config, isApiKeyRequired, requestOptions, Method.POST);
+    }
+
+    @Override
+    public String request(String requestUrl, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, Method method) throws IOException, HTTPClientException {
+        HttpURLConnection httpConnection = createRequest(requestUrl, config.getApplicationName(), requestOptions, method);
 
         if (config.getTerminalCertificate() != null) {
             Environment environment = getEnvironment(config);
@@ -100,7 +105,7 @@ public class HttpURLConnectionClient implements ClientInterface {
 
         setContentType(httpConnection, APPLICATION_JSON_TYPE);
 
-        return doPostRequest(httpConnection, requestBody);
+        return doRequest(httpConnection, requestBody);
     }
 
     private Environment getEnvironment(Config config) {
@@ -130,7 +135,7 @@ public class HttpURLConnectionClient implements ClientInterface {
     public String post(String requestUrl, Map<String, String> params, Config config) throws IOException, HTTPClientException {
         String postQuery = getQuery(params);
         HttpURLConnection httpConnection = createRequest(requestUrl, config.getApplicationName());
-        return doPostRequest(httpConnection, postQuery);
+        return doRequest(httpConnection, postQuery);
     }
 
     /**
@@ -166,6 +171,13 @@ public class HttpURLConnectionClient implements ClientInterface {
      * Initialize the httpConnection
      */
     private HttpURLConnection createRequest(String requestUrl, String applicationName, RequestOptions requestOptions) throws IOException {
+        return createRequest(requestUrl, applicationName, requestOptions, Method.POST);
+    }
+
+    /**
+     * Initialize the httpConnection
+     */
+    private HttpURLConnection createRequest(String requestUrl, String applicationName, RequestOptions requestOptions, Method method) throws IOException {
         URL targetUrl = new URL(requestUrl);
         HttpURLConnection httpConnection;
 
@@ -177,7 +189,7 @@ public class HttpURLConnectionClient implements ClientInterface {
         }
         httpConnection.setUseCaches(false);
         httpConnection.setDoOutput(true);
-        httpConnection.setRequestMethod(METHOD_POST);
+        httpConnection.setRequestMethod(method.name());
 
         httpConnection.setRequestProperty(ACCEPT_CHARSET, CHARSET);
         httpConnection.setRequestProperty(USER_AGENT, String.format("%s %s/%s", applicationName, Client.LIB_NAME, Client.LIB_VERSION));
@@ -221,7 +233,7 @@ public class HttpURLConnectionClient implements ClientInterface {
     /**
      * Does a POST request with raw body
      */
-    private String doPostRequest(HttpURLConnection httpConnection, String requestBody) throws IOException, HTTPClientException {
+    private String doRequest(HttpURLConnection httpConnection, String requestBody) throws IOException, HTTPClientException {
         String response = null;
 
         OutputStream outputStream = httpConnection.getOutputStream();
