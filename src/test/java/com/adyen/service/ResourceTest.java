@@ -39,7 +39,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static com.adyen.constants.ApiConstants.RequestProperty.Method;
+import static com.adyen.constants.ApiConstants.HttpMethod.POST;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceTest extends BaseTest {
@@ -61,7 +61,7 @@ public class ResourceTest extends BaseTest {
 
     @Test
     public void testRequest() throws Exception {
-        when(clientInterfaceMock.request("", "request", null, false, null, Method.POST)).thenReturn("response");
+        when(clientInterfaceMock.request("", "request", null, false, null, POST)).thenReturn("response");
 
         Resource resource = new Resource(serviceMock, "", null);
         String response = resource.request("request");
@@ -72,7 +72,7 @@ public class ResourceTest extends BaseTest {
     @Test
     public void testRequestExceptionEmpty() throws IOException, HTTPClientException {
         try {
-            when(clientInterfaceMock.request("", "request", null, false, null, Method.POST))
+            when(clientInterfaceMock.request("", "request", null, false, null, POST))
                     .thenThrow(new HTTPClientException("message", 403, new HashMap<>(), null));
 
             Resource resource = new Resource(serviceMock, "", null);

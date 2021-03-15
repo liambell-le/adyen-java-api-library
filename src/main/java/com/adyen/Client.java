@@ -21,8 +21,8 @@
 package com.adyen;
 
 import com.adyen.enums.Environment;
+import com.adyen.httpclient.ApacheHttpClient;
 import com.adyen.httpclient.ClientInterface;
-import com.adyen.httpclient.HttpURLConnectionClient;
 
 import java.util.Optional;
 
@@ -204,7 +204,7 @@ public class Client {
     }
 
     public ClientInterface getHttpClient() {
-        this.httpClient = Optional.ofNullable(this.httpClient).orElseGet(HttpURLConnectionClient::new);
+        this.httpClient = Optional.ofNullable(this.httpClient).orElseGet(ApacheHttpClient::new);
         return this.httpClient;
     }
 

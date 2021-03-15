@@ -26,14 +26,13 @@ import com.adyen.model.RequestOptions;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.adyen.constants.ApiConstants.RequestProperty.Method;
-
 public interface ClientInterface {
 
-    String request(String endpoint, String json, Config config) throws IOException, HTTPClientException;
-    String request(String endpoint, String json, Config config, boolean isApiKeyRequired) throws IOException, HTTPClientException;
-    String request(String endpoint, String json, Config config, boolean isApiKeyRequired, RequestOptions requestOptions) throws IOException, HTTPClientException;
-    String request(String requestUrl, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, Method method) throws IOException, HTTPClientException;
+    String request(String endpoint, String requestBody, Config config) throws IOException, HTTPClientException;
+    String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired) throws IOException, HTTPClientException;
+    String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions) throws IOException, HTTPClientException;
+    String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, String httpMethod) throws IOException, HTTPClientException;
+    String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, String httpMethod, Map<String, Object> params) throws IOException, HTTPClientException;
 
     String post(String endpoint, Map<String, String> postParameters, Config config) throws IOException, HTTPClientException;
 }

@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static com.adyen.constants.ApiConstants.RequestProperty.Method;
+import static com.adyen.constants.ApiConstants.HttpMethod.POST;
 
 public class Resource {
 
@@ -59,7 +59,7 @@ public class Resource {
      * @throws IOException  IOException
      */
     public String request(String json) throws ApiException, IOException {
-        return request(json, null, Method.POST, null);
+        return request(json, null, POST, null);
     }
 
     /**
@@ -72,7 +72,7 @@ public class Resource {
      * @return request
      */
     public String request(String json, RequestOptions requestOptions) throws ApiException, IOException {
-        return request(json, requestOptions, Method.POST, null);
+        return request(json, requestOptions, POST, null);
     }
 
     /**
@@ -80,20 +80,20 @@ public class Resource {
      *
      * @param json   json
      * @param requestOptions request options
-     * @param method http method
+     * @param httpMethod http method
      * @param params request parameters
      * @throws ApiException apiException
      * @throws IOException  IOException
      * @return request
      */
-    public String request(String json, RequestOptions requestOptions, Method method, Map<String, String> params) throws ApiException, IOException {
+    public String request(String json, RequestOptions requestOptions, String httpMethod, Map<String, String> params) throws ApiException, IOException {
         ClientInterface clientInterface = service.getClient().getHttpClient();
         Config config = service.getClient().getConfig();
         String responseBody;
         ApiException apiException;
 
         try {
-            return clientInterface.request(resolve(params), json, config, service.isApiKeyRequired(), requestOptions, method);
+            return clientInterface.request(resolve(params), json, config, service.isApiKeyRequired(), requestOptions, httpMethod);
         } catch (HTTPClientException e) {
             responseBody = e.getResponseBody();
             apiException = new ApiException(e.getMessage(), e.getCode(), e.getResponseHeaders());

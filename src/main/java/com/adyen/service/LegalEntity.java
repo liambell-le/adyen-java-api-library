@@ -8,23 +8,28 @@ import com.adyen.model.legalentity.LegalEntityResponse;
 import com.adyen.service.exception.ApiException;
 import com.adyen.service.resource.legalentity.CreateLegalEntity;
 import com.adyen.service.resource.legalentity.RetrieveLegalEntity;
+import com.adyen.service.resource.legalentity.UpdateLegalEntity;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.adyen.constants.ApiConstants.RequestProperty.Method;
+import static com.adyen.constants.ApiConstants.HttpMethod.GET;
+import static com.adyen.constants.ApiConstants.HttpMethod.POST;
+import static com.adyen.constants.ApiConstants.HttpMethod.PATCH;
 
 public class LegalEntity extends Service {
 
     private CreateLegalEntity createLegalEntity;
     private RetrieveLegalEntity retrieveLegalEntity;
+    private UpdateLegalEntity updateLegalEntity;
 
     public LegalEntity(Client client) {
         super(client);
         this.createLegalEntity = new CreateLegalEntity(this);
         this.retrieveLegalEntity = new RetrieveLegalEntity(this);
+        this.updateLegalEntity = new UpdateLegalEntity(this);
     }
 
     /**
@@ -48,7 +53,7 @@ public class LegalEntity extends Service {
      */
     public LegalEntityResponse createLegalEntity(LegalEntityRequest legalEntityRequest, RequestOptions requestOptions) throws ApiException, IOException {
         String jsonRequest = GSON.toJson(legalEntityRequest);
-        String jsonResult = createLegalEntity.request(jsonRequest, requestOptions);
+        String jsonResult = createLegalEntity.request(jsonRequest, requestOptions, POST, null);
         return GSON.fromJson(jsonResult, new TypeToken<LegalEntityResponse>() {
         }.getType());
     }
@@ -74,7 +79,36 @@ public class LegalEntity extends Service {
      */
     public LegalEntityResponse retrieveLegalEntity(String id, RequestOptions requestOptions) throws ApiException, IOException {
         Map<String, String> params = Collections.singletonMap("id", id);
-        String jsonResult = retrieveLegalEntity.request(null, requestOptions, Method.GET, params);
+        String jsonResult = retrieveLegalEntity.request(null, requestOptions, GET, params);
+        return GSON.fromJson(jsonResult, new TypeToken<LegalEntityResponse>() {
+        }.getType());
+    }
+
+    /**
+     * PATCH /legalEntities/{id} API call
+     * @param id legal entity id
+     * @param legalEntityRequest LegalEntityRequest
+     * @return legalEntityResponse LegalEntityResponse
+     * @throws ApiException ApiException
+     * @throws IOException IOException
+     */
+    public LegalEntityResponse updateLegalEntity(String id, LegalEntityRequest legalEntityRequest) throws ApiException, IOException {
+        return updateLegalEntity(id, legalEntityRequest, null);
+    }
+
+    /**
+     * PATCH /legalEntities/{id} API call
+     * @param id legal entity id
+     * @param legalEntityRequest LegalEntityRequest
+     * @param requestOptions RequestOptions
+     * @return legalEntityResponse LegalEntityResponse
+     * @throws ApiException ApiException
+     * @throws IOException IOException
+     */
+    public LegalEntityResponse updateLegalEntity(String id, LegalEntityRequest legalEntityRequest, RequestOptions requestOptions) throws ApiException, IOException {
+        Map<String, String> params = Collections.singletonMap("id", id);
+        String jsonRequest = GSON.toJson(legalEntityRequest);
+        String jsonResult = updateLegalEntity.request(jsonRequest, requestOptions, PATCH, params);
         return GSON.fromJson(jsonResult, new TypeToken<LegalEntityResponse>() {
         }.getType());
     }

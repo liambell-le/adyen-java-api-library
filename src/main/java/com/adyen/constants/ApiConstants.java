@@ -99,13 +99,14 @@ public interface ApiConstants {
         String TYPE_SCHEME = "scheme";
     }
 
+    interface HttpMethod {
+        String POST = "POST";
+        String GET = "GET";
+        String DELETE = "DELETE";
+        String PATCH = "PATCH";
+    }
+
     interface RequestProperty {
-        enum Method {
-            POST,
-            GET,
-            PATCH,
-            DELETE
-        }
         String IDEMPOTENCY_KEY = "Idempotency-Key";
         String ACCEPT_CHARSET = "Accept-Charset";
         String USER_AGENT = "User-Agent";

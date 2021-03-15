@@ -31,8 +31,10 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,18 +46,18 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
+import static com.adyen.constants.ApiConstants.HttpMethod.PATCH;
+import static com.adyen.constants.ApiConstants.HttpMethod.POST;
 import static com.adyen.constants.ApiConstants.RequestProperty.ACCEPT_CHARSET;
 import static com.adyen.constants.ApiConstants.RequestProperty.API_KEY;
 import static com.adyen.constants.ApiConstants.RequestProperty.APPLICATION_JSON_TYPE;
 import static com.adyen.constants.ApiConstants.RequestProperty.CONTENT_TYPE;
 import static com.adyen.constants.ApiConstants.RequestProperty.IDEMPOTENCY_KEY;
-import static com.adyen.constants.ApiConstants.RequestProperty.Method;
 import static com.adyen.constants.ApiConstants.RequestProperty.USER_AGENT;
 
 public class HttpURLConnectionClient implements ClientInterface {
@@ -67,28 +69,43 @@ public class HttpURLConnectionClient implements ClientInterface {
      * Does a POST request.
      * config is used to obtain basic auth username, password and User-Agent
      */
+    /**
+     * Does a POST request.
+     * config is used to obtain basic auth username, password and User-Agent
+     */
     @Override
-    public String request(String requestUrl, String requestBody, Config config) throws IOException, HTTPClientException {
-        return request(requestUrl, requestBody, config, false);
+    public String request(String endpoint, String requestBody, Config config) throws IOException, HTTPClientException {
+        return request(endpoint, requestBody, config, false);
     }
 
     @Override
-    public String request(String endpoint, String json, Config config, boolean isApiKeyRequired) throws IOException, HTTPClientException {
-        return request(endpoint, json, config, isApiKeyRequired, null);
+    public String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired) throws IOException, HTTPClientException {
+        return request(endpoint, requestBody, config, isApiKeyRequired, null);
     }
 
     @Override
-    public String request(String requestUrl, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions) throws IOException, HTTPClientException {
-        return request(requestUrl, requestBody, config, isApiKeyRequired, requestOptions, Method.POST);
+    public String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions) throws IOException, HTTPClientException {
+        return request(endpoint, requestBody, config, isApiKeyRequired, null, POST);
     }
 
     @Override
-    public String request(String requestUrl, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, Method method) throws IOException, HTTPClientException {
-        HttpURLConnection httpConnection = createRequest(requestUrl, config.getApplicationName(), requestOptions, method);
+    public String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, String httpMethod) throws IOException, HTTPClientException {
+        return request(endpoint, requestBody, config, isApiKeyRequired, null, httpMethod, null);
+    }
 
-        if (config.getTerminalCertificate() != null) {
+    @Override
+    public String request(String endpoint, String requestBody, Config config, boolean isApiKeyRequired, RequestOptions requestOptions, String httpMethod, Map<String, Object> params) throws IOException, HTTPClientException {
+
+        if (params != null && !params.isEmpty()) {
+            String queryParams = getQueryNew(params);
+            endpoint = endpoint + "/" + queryParams;
+        }
+
+        HttpURLConnection httpConnection = createRequest(endpoint, config.getApplicationName(), requestOptions, httpMethod);
+
+        if (config.getTerminalCertificatePath() != null && !config.getTerminalCertificatePath().isEmpty()) {
             Environment environment = getEnvironment(config);
-            installCertificateVerifier(httpConnection, config.getTerminalCertificate());
+            installCertificateVerifier(httpConnection, config.getTerminalCertificatePath());
             installCertificateCommonNameValidator(httpConnection, environment);
         }
 
@@ -103,7 +120,12 @@ public class HttpURLConnectionClient implements ClientInterface {
         httpConnection.setConnectTimeout(config.getConnectionTimeoutMillis());
         httpConnection.setReadTimeout(config.getReadTimeoutMillis());
 
-        return doRequest(httpConnection, requestBody);
+        setContentType(httpConnection, APPLICATION_JSON_TYPE);
+        if (requestBody != null) {
+            addRequestBody(httpConnection, requestBody);
+        }
+
+        return doRequest(httpConnection);
     }
 
     private Environment getEnvironment(Config config) {
@@ -133,7 +155,10 @@ public class HttpURLConnectionClient implements ClientInterface {
     public String post(String requestUrl, Map<String, String> params, Config config) throws IOException, HTTPClientException {
         String postQuery = getQuery(params);
         HttpURLConnection httpConnection = createRequest(requestUrl, config.getApplicationName());
-        return doRequest(httpConnection, postQuery);
+        addRequestBody(httpConnection, postQuery);
+        String response = doRequest(httpConnection);
+
+        return response;
     }
 
     /**
@@ -158,24 +183,36 @@ public class HttpURLConnectionClient implements ClientInterface {
         return result.toString();
     }
 
+    private String getQueryNew(Map<String, Object> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (Map.Entry<String, Object> pair : params.entrySet()) {
+            if (first) {
+                first = false;
+            } else {
+                result.append("&");
+            }
+
+            result.append(URLEncoder.encode(pair.getKey(), CHARSET));
+            result.append("=");
+            result.append(URLEncoder.encode(pair.getValue().toString(), CHARSET));
+        }
+
+        return result.toString();
+    }
+
     /**
      * Initialize the httpConnection
      */
     private HttpURLConnection createRequest(String requestUrl, String applicationName) throws IOException {
-        return createRequest(requestUrl, applicationName, null);
+        return createRequest(requestUrl, applicationName, null, POST);
     }
 
     /**
      * Initialize the httpConnection
      */
-    private HttpURLConnection createRequest(String requestUrl, String applicationName, RequestOptions requestOptions) throws IOException {
-        return createRequest(requestUrl, applicationName, requestOptions, Method.POST);
-    }
-
-    /**
-     * Initialize the httpConnection
-     */
-    private HttpURLConnection createRequest(String requestUrl, String applicationName, RequestOptions requestOptions, Method method) throws IOException {
+    public HttpURLConnection createRequest(String requestUrl, String applicationName, RequestOptions requestOptions, String httpMethod) throws IOException {
         URL targetUrl = new URL(requestUrl);
         HttpURLConnection httpConnection;
 
@@ -187,7 +224,14 @@ public class HttpURLConnectionClient implements ClientInterface {
         }
         httpConnection.setUseCaches(false);
         httpConnection.setDoOutput(true);
-        httpConnection.setRequestMethod(method.name());
+        if (httpMethod == PATCH) {
+            httpConnection.setRequestMethod(POST);
+            httpConnection.setRequestProperty("X-HTTP-Method-Override", PATCH);
+        } else if (httpMethod != null && !httpMethod.isEmpty()) {
+            httpConnection.setRequestMethod(httpMethod);
+        } else {
+            httpConnection.setRequestMethod(POST);
+        }
 
         httpConnection.setRequestProperty(ACCEPT_CHARSET, CHARSET);
         httpConnection.setRequestProperty(USER_AGENT, String.format("%s %s/%s", applicationName, Client.LIB_NAME, Client.LIB_VERSION));
@@ -229,27 +273,32 @@ public class HttpURLConnectionClient implements ClientInterface {
     }
 
     /**
-     * Does a POST request with raw body
+     * Add body into the request needed for POST and Patch messages
+     *
+     * @param httpConnection
      */
-    private String doRequest(HttpURLConnection httpConnection, String requestBody) throws IOException, HTTPClientException {
+    public void addRequestBody(HttpURLConnection httpConnection, String requestBody) throws IOException {
+        OutputStream outputStream = httpConnection.getOutputStream();
+        outputStream.write(requestBody.getBytes());
+        outputStream.flush();
+    }
+
+    /**
+     * Does a request with raw body
+     */
+    public String doRequest(HttpURLConnection httpConnection) throws IOException, HTTPClientException {
         String response = null;
 
-        if (requestBody != null) {
-            setContentType(httpConnection, APPLICATION_JSON_TYPE);
-            OutputStream outputStream = httpConnection.getOutputStream();
-            outputStream.write(requestBody.getBytes());
-            outputStream.flush();
-        }
-
         int responseCode = httpConnection.getResponseCode();
-        Integer[] resultOKHttpStatusCodes = {HttpURLConnection.HTTP_OK, HttpURLConnection.HTTP_ACCEPTED, HttpURLConnection.HTTP_NO_CONTENT, HttpURLConnection.HTTP_CREATED};
-        if (!Arrays.asList(resultOKHttpStatusCodes).contains(responseCode)) {
+        if (responseCode != HttpURLConnection.HTTP_OK) {
             //Read the response from the error stream
             if (httpConnection.getErrorStream() != null) {
                 response = getResponseBody(httpConnection.getErrorStream());
             }
 
-            throw new HTTPClientException(responseCode, "HTTP Exception", httpConnection.getHeaderFields(), response);
+            HTTPClientException httpClientException = new HTTPClientException(responseCode, "HTTP Exception", null, response);
+
+            throw httpClientException;
         }
 
         //InputStream is only available on successful requests >= 200 <400
@@ -269,13 +318,17 @@ public class HttpURLConnectionClient implements ClientInterface {
         this.proxy = proxy;
     }
 
-    private void installCertificateVerifier(URLConnection connection, Certificate cert) throws HTTPClientException {
+    private void installCertificateVerifier(URLConnection connection, String terminalCertificatePath) throws HTTPClientException {
         if (connection instanceof HttpsURLConnection) {
             HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
 
             try {
                 // Create new KeyStore for the terminal certificate
-                KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                InputStream certificateInput = new FileInputStream(terminalCertificatePath);
+                CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+                X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(certificateInput);
+
+                KeyStore keyStore = KeyStore.getInstance("JKS");
                 keyStore.load(null, null);
                 keyStore.setCertificateEntry("TerminalCertificate", cert);
 
@@ -290,27 +343,30 @@ public class HttpURLConnectionClient implements ClientInterface {
                 sc.init(null, trustManagers, new java.security.SecureRandom());
                 httpsConnection.setSSLSocketFactory(sc.getSocketFactory());
             } catch (GeneralSecurityException | IOException e) {
-                throw new HTTPClientException("Error installing certificate verifier", e);
+                throw new HTTPClientException("Error loading certificate from path", e);
             }
         }
     }
+
 
     private void installCertificateCommonNameValidator(HttpURLConnection connection, final Environment environment) {
         if (connection instanceof HttpsURLConnection) {
             HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
 
-            HostnameVerifier terminalHostsValid = (host, session) -> {
-                try {
-                    if (session.getPeerCertificates() != null && session.getPeerCertificates().length > 0) {
-                        // Assume the first certificate is the leaf, since chain will be ordered, according to Java documentation:
-                        // https://docs.oracle.com/javase/7/docs/api/javax/net/ssl/SSLSession.html#getPeerCertificates()
-                        X509Certificate certificate = (X509Certificate) session.getPeerCertificates()[0];
-                        return TerminalCommonNameValidator.validateCertificate(certificate, environment);
+            HostnameVerifier terminalHostsValid = new HostnameVerifier() {
+                public boolean verify(String host, SSLSession session) {
+                    try {
+                        if (session.getPeerCertificates() != null && session.getPeerCertificates().length > 0) {
+                            // Assume the first certificate is the leaf, since chain will be ordered, according to Java documentation:
+                            // https://docs.oracle.com/javase/7/docs/api/javax/net/ssl/SSLSession.html#getPeerCertificates()
+                            X509Certificate certificate = (X509Certificate) session.getPeerCertificates()[0];
+                            return TerminalCommonNameValidator.validateCertificate(certificate, environment);
+                        }
+                        return false;
+                    } catch (SSLPeerUnverifiedException e) {
+                        e.printStackTrace();
+                        return false;
                     }
-                    return false;
-                } catch (SSLPeerUnverifiedException e) {
-                    e.printStackTrace();
-                    return false;
                 }
             };
             // Install the terminal-trusting host verifier

@@ -45,7 +45,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static com.adyen.constants.ApiConstants.RequestProperty.Method;
+import static com.adyen.constants.ApiConstants.HttpMethod.POST;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CheckoutTest extends BaseTest {
@@ -63,7 +63,7 @@ public class CheckoutTest extends BaseTest {
         when(client.getConfig()).thenReturn(config);
         when(config.getCheckoutEndpoint()).thenReturn("checkout");
         when(client.getHttpClient()).thenReturn(clientInterface);
-        when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), eq(Method.POST))).thenReturn("{\"pspReference\": \"12345\"}");
+        when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), eq(POST))).thenReturn("{\"pspReference\": \"12345\"}");
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
@@ -76,7 +76,7 @@ public class CheckoutTest extends BaseTest {
 
         assertNotNull(response);
         assertEquals("12345", response.getPspReference());
-        verify(clientInterface).request(anyString(), captor.capture(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), eq(Method.POST));
+        verify(clientInterface).request(anyString(), captor.capture(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), eq(POST));
         //html escaped
         assertFalse(captor.getValue().contains("\"mpiData\":{\"cavv\":\"AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\",\"xid\":\"AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\"}"));
         //not html escaped
