@@ -103,8 +103,6 @@ public class HttpURLConnectionClient implements ClientInterface {
         httpConnection.setConnectTimeout(config.getConnectionTimeoutMillis());
         httpConnection.setReadTimeout(config.getReadTimeoutMillis());
 
-        setContentType(httpConnection, APPLICATION_JSON_TYPE);
-
         return doRequest(httpConnection, requestBody);
     }
 
@@ -236,9 +234,12 @@ public class HttpURLConnectionClient implements ClientInterface {
     private String doRequest(HttpURLConnection httpConnection, String requestBody) throws IOException, HTTPClientException {
         String response = null;
 
-        OutputStream outputStream = httpConnection.getOutputStream();
-        outputStream.write(requestBody.getBytes());
-        outputStream.flush();
+        if (requestBody != null) {
+            setContentType(httpConnection, APPLICATION_JSON_TYPE);
+            OutputStream outputStream = httpConnection.getOutputStream();
+            outputStream.write(requestBody.getBytes());
+            outputStream.flush();
+        }
 
         int responseCode = httpConnection.getResponseCode();
         Integer[] resultOKHttpStatusCodes = {HttpURLConnection.HTTP_OK, HttpURLConnection.HTTP_ACCEPTED, HttpURLConnection.HTTP_NO_CONTENT, HttpURLConnection.HTTP_CREATED};

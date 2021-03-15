@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static com.adyen.constants.ApiConstants.RequestProperty.Method;
 
@@ -58,7 +59,7 @@ public class Resource {
      * @throws IOException  IOException
      */
     public String request(String json) throws ApiException, IOException {
-        return request(json, null, Method.POST);
+        return request(json, null, Method.POST, null);
     }
 
     /**
@@ -71,7 +72,7 @@ public class Resource {
      * @return request
      */
     public String request(String json, RequestOptions requestOptions) throws ApiException, IOException {
-        return request(json, requestOptions, Method.POST);
+        return request(json, requestOptions, Method.POST, null);
     }
 
     /**
@@ -80,18 +81,19 @@ public class Resource {
      * @param json   json
      * @param requestOptions request options
      * @param method http method
+     * @param params request parameters
      * @throws ApiException apiException
      * @throws IOException  IOException
      * @return request
      */
-    public String request(String json, RequestOptions requestOptions, Method method) throws ApiException, IOException {
+    public String request(String json, RequestOptions requestOptions, Method method, Map<String, String> params) throws ApiException, IOException {
         ClientInterface clientInterface = service.getClient().getHttpClient();
         Config config = service.getClient().getConfig();
         String responseBody;
         ApiException apiException;
 
         try {
-            return clientInterface.request(endpoint, json, config, service.isApiKeyRequired(), requestOptions, method);
+            return clientInterface.request(resolve(params), json, config, service.isApiKeyRequired(), requestOptions, method);
         } catch (HTTPClientException e) {
             responseBody = e.getResponseBody();
             apiException = new ApiException(e.getMessage(), e.getCode(), e.getResponseHeaders());
@@ -107,5 +109,34 @@ public class Resource {
         }
 
         throw apiException;
+    }
+
+    private String resolve(Map<String, String> params) {
+        if (endpoint == null || params == null || endpoint.isEmpty() || params.isEmpty()) {
+            return endpoint;
+        }
+
+        StringBuilder path = new StringBuilder();
+        int i = 0;
+        do {
+            int beginVar = endpoint.indexOf("{", i);
+            if (beginVar < 0) {
+                path.append(endpoint, i, endpoint.length());
+                break;
+            }
+            path.append(endpoint, i, beginVar);
+            int endVar = endpoint.indexOf("}", i);
+            if (endVar < 0) {
+                path.append(endpoint, beginVar, endpoint.length());
+                break;
+            }
+
+            String varName = endpoint.substring(beginVar + 1, endVar);
+            path.append(params.get(varName));
+            i = endVar + 1;
+
+        } while (i < endpoint.length());
+
+        return path.toString();
     }
 }

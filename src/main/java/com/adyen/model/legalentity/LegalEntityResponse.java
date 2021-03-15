@@ -7,6 +7,9 @@ public class LegalEntityResponse {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("type")
+    private String type;
+
     @SerializedName("individual")
     private Individual individual;
 
@@ -16,6 +19,14 @@ public class LegalEntityResponse {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Individual getIndividual() {

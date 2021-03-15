@@ -67,8 +67,8 @@ public class Client {
 
     // Kyc-Component
     public static final String LE_API_ENDPOINT_VERSION = "V1";
-    public static final String LE_API_ENDPOINT_TEST = "http://localhost:8080/bcl/";
-    public static final String LE_API_ENDPOINT_LIVE = "https://balanceplatform-api-live.adyen.com/bcl/";
+    public static final String LE_API_ENDPOINT_TEST = "http://localhost:8080/bcl";
+    public static final String LE_API_ENDPOINT_LIVE = "https://balanceplatform-api-live.adyen.com/bcl";
 
     public Client() {
         this.config = new Config();
