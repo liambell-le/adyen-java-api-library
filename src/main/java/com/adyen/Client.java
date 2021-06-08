@@ -69,6 +69,10 @@ public class Client {
     public static final String LE_API_ENDPOINT_VERSION = "V1";
     public static final String LE_API_ENDPOINT_TEST = "http://localhost:8080/bcl";
     public static final String LE_API_ENDPOINT_LIVE = "https://balanceplatform-api-live.adyen.com/bcl";
+    // Kyc External API
+    public static final String KYC_EXTERNAL_API_ENDPOINT_VERSION = "v1";
+    public static final String KYC_EXTERNAL_API_ENDPOINT_TEST = "http://localhost:8080/kycexternalapi";
+    public static final String KYC_EXTERNAL_API_ENDPOINT_LIVE = "https://kycapi-live.adyen.com/kycexternalapi";
 
     public Client() {
         this.config = new Config();
@@ -180,6 +184,7 @@ public class Client {
             this.config.setPosTerminalManagementApiEndpoint(POS_TERMINAL_MANAGEMENT_ENDPOINT_TEST);
             this.config.setDataProtectionEndpoint(DATA_PROTECTION_ENDPOINT_TEST);
             this.config.setLegalEntityAPIEndpoint(LE_API_ENDPOINT_TEST);
+            this.config.setKycExternalAPIEndpoint(KYC_EXTERNAL_API_ENDPOINT_TEST);
         } else if (Environment.LIVE.equals(environment)) {
             this.config.setEnvironment(environment);
             this.config.setMarketPayEndpoint(MARKETPAY_ENDPOINT_LIVE);
@@ -195,6 +200,7 @@ public class Client {
             this.config.setPosTerminalManagementApiEndpoint(POS_TERMINAL_MANAGEMENT_ENDPOINT_LIVE);
             this.config.setDataProtectionEndpoint(DATA_PROTECTION_ENDPOINT_LIVE);
             this.config.setLegalEntityAPIEndpoint(LE_API_ENDPOINT_LIVE);
+            this.config.setKycExternalAPIEndpoint(KYC_EXTERNAL_API_ENDPOINT_LIVE);
         }
     }
 

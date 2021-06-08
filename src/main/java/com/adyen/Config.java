@@ -55,6 +55,7 @@ public class Config {
 
     protected String dataProtectionEndpoint;
     protected String legalEntityAPIEndpoint;
+    protected String kycExternalAPIEndpoint;
 
     public Config() {
         // do nothing
@@ -222,5 +223,13 @@ public class Config {
 
     public void setLegalEntityAPIEndpoint(String legalEntityAPIEndpoint) {
         this.legalEntityAPIEndpoint = legalEntityAPIEndpoint;
+    }
+
+    public String getKycExternalAPIEndpoint() {
+        return kycExternalAPIEndpoint;
+    }
+
+    public void setKycExternalAPIEndpoint(String kycExternalAPIEndpoint) {
+        this.kycExternalAPIEndpoint = kycExternalAPIEndpoint;
     }
 }
