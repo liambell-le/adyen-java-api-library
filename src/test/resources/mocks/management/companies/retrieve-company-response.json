@@ -1,0 +1,24 @@
+{
+  "id": "FakeCompany",
+  "status": "Active",
+  "dataCenters": [
+    {
+      "name": "default",
+      "livePrefix": ""
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://management-test.adyen.com/v1/companies/FakeCompany"
+    },
+    "apiCredentials": {
+      "href": "https://management-test.adyen.com/v1/companies/FakeCompany/apiCredentials"
+    },
+    "users": {
+      "href": "https://management-test.adyen.com/v1/companies/FakeCompany/users"
+    },
+    "webhooks": {
+      "href": "https://management-test.adyen.com/v1/companies/FakeCompany/webhooks"
+    }
+  }
+}

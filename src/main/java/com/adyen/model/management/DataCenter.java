@@ -18,38 +18,52 @@
  * This file is open source and available under the MIT license.
  * See the LICENSE file for more info.
  */
+
 package com.adyen.model.management;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.Objects;
-
 import static com.adyen.util.Util.toIndentedString;
 
-/**
- * LinksElement
- */
+public class DataCenter {
+    @SerializedName("livePrefix")
+    private String livePrefix = null;
 
-public class LinksElement {
-    @SerializedName("href")
-    private String href = null;
+    @SerializedName("name")
+    private String name = null;
 
-    public LinksElement href(String href) {
-        this.href = href;
+    public DataCenter livePrefix(String livePrefix) {
+        this.livePrefix = livePrefix;
         return this;
     }
 
     /**
-     * Get href
-     *
-     * @return href
+     * Get livePrefix
+     * @return livePrefix
      **/
-    public String getHref() {
-        return href;
+    public String getLivePrefix() {
+        return livePrefix;
     }
 
-    public void setHref(String href) {
-        this.href = href;
+    public void setLivePrefix(String livePrefix) {
+        this.livePrefix = livePrefix;
+    }
+
+    public DataCenter name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get name
+     * @return name
+     **/
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -61,22 +75,24 @@ public class LinksElement {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LinksElement linksElement = (LinksElement) o;
-        return Objects.equals(this.href, linksElement.href);
+        DataCenter dataCenter = (DataCenter) o;
+        return Objects.equals(this.livePrefix, dataCenter.livePrefix) &&
+                Objects.equals(this.name, dataCenter.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(href);
+        return Objects.hash(livePrefix, name);
     }
 
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class LinksElement {\n");
+        sb.append("class DataCenter {\n");
 
-        sb.append("    href: ").append(toIndentedString(href)).append("\n");
+        sb.append("    livePrefix: ").append(toIndentedString(livePrefix)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("}");
         return sb.toString();
     }
