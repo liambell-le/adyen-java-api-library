@@ -35,164 +35,164 @@
       }
     },
     {
-      "id": "TestMerchant",
+      "id": "FakeMerchant",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchant"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchant"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchant/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchant/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchant/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchant/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchant/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchant/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantAuthenticationOnly",
+      "id": "FakeMerchantAuthenticationOnly",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantAuthenticationOnly"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantAuthenticationOnly"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantAuthenticationOnly/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantAuthenticationOnly/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantAuthenticationOnly/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantAuthenticationOnly/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantAuthenticationOnly/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantAuthenticationOnly/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantBulkSettlement",
+      "id": "FakeMerchantBulkSettlement",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantBulkSettlement"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantBulkSettlement"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantBulkSettlement/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantBulkSettlement/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantBulkSettlement/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantBulkSettlement/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantBulkSettlement/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantBulkSettlement/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantErrorRetry",
+      "id": "FakeMerchantErrorRetry",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantErrorRetry"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantErrorRetry"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantErrorRetry/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantErrorRetry/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantErrorRetry/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantErrorRetry/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantErrorRetry/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantErrorRetry/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantExt",
+      "id": "FakeMerchantExt",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantExt"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantExt"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantExt/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantExt/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantExt/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantExt/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantExt/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantExt/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantIS1",
+      "id": "FakeMerchantIS1",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS1"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS1"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS1/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS1/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS1/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS1/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS1/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS1/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantIS2",
+      "id": "FakeMerchantIS2",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS2"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS2"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS2/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS2/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS2/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS2/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantIS2/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantIS2/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantLoadExternalPayment",
+      "id": "FakeMerchantLoadExternalPayment",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantLoadExternalPayment"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantLoadExternalPayment"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantLoadExternalPayment/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantLoadExternalPayment/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantLoadExternalPayment/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantLoadExternalPayment/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantLoadExternalPayment/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantLoadExternalPayment/webhooks"
         }
       }
     },
     {
-      "id": "TestMerchantNetworkTokenization",
+      "id": "FakeMerchantNetworkTokenization",
       "status": "Active",
       "_links": {
         "self": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantNetworkTokenization"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantNetworkTokenization"
         },
         "apiCredentials": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantNetworkTokenization/apiCredentials"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantNetworkTokenization/apiCredentials"
         },
         "users": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantNetworkTokenization/users"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantNetworkTokenization/users"
         },
         "webhooks": {
-          "href": "https://management-test.adyen.com/v1/merchants/TestMerchantNetworkTokenization/webhooks"
+          "href": "https://management-test.adyen.com/v1/merchants/FakeMerchantNetworkTokenization/webhooks"
         }
       }
     }
