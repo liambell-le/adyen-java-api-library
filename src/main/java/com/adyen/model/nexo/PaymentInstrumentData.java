@@ -1,9 +1,11 @@
 package com.adyen.model.nexo;
 
-import com.adyen.serializer.SSCSerializer;
-import com.google.gson.annotations.JsonAdapter;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -40,33 +42,36 @@ public class PaymentInstrumentData {
      * The Card data.
      */
     @XmlElement(name = "CardData")
+    @Schema(description = "Information related to the payment card used for the transaction. --Rule: If PaymentInstrumentType is \"Card\"")
     protected CardData cardData;
     /**
      * The Check data.
      */
     @XmlElement(name = "CheckData")
+    @Schema(description = "Information related to the paper check used for the transaction. --Rule: If PaymentInstrumentType is \"Check\"")
     protected CheckData checkData;
     /**
      * The Mobile data.
      */
     @XmlElement(name = "MobileData")
+    @Schema(description = "Information related to the mobile for the payment transaction. --Rule: If PaymentInstrumentType is \"Mobile\"")
     protected MobileData mobileData;
     /**
      * The Payment instrument.
      */
-    @XmlAttribute(name = "PaymentInstrumentType", required = true)
+    @XmlElement(name = "PaymentInstrumentType", required = true)
+    @Schema(description = "Type of payment instrument.")
     protected PaymentInstrumentType paymentInstrumentType;
     /**
      * The Stored value account id.
      */
-    @XmlAttribute(name = "StoredValueAccountID")
+    @XmlElement(name = "StoredValueAccountID")
     protected StoredValueAccountID storedValueAccountID;
     /**
      * The Protected card data.
      */
-    @XmlAttribute(name = "ProtectedCardData")
-    @JsonAdapter(SSCSerializer.class)
-    protected SSC protectedCardData;
+    @XmlElement(name = "ProtectedCardData")
+    protected ContentInformation protectedCardData;
 
     /**
      * Gets the value of the cardData property.
@@ -161,18 +166,18 @@ public class PaymentInstrumentData {
     /**
      * Gets the value of the protectedCardData property.
      *
-     * @return possible      object is     {@link SSC }
+     * @return possible      object is     {@link ContentInformation }
      */
-    public SSC getProtectedCardData() {
+    public ContentInformation getProtectedCardData() {
         return protectedCardData;
     }
 
     /**
      * Sets the value of the protectedCardData property.
      *
-     * @param value allowed object is     {@link SSC }
+     * @param value allowed object is     {@link ContentInformation }
      */
-    public void setProtectedCardData(SSC value) {
+    public void setProtectedCardData(ContentInformation value) {
         this.protectedCardData = value;
     }
 }
